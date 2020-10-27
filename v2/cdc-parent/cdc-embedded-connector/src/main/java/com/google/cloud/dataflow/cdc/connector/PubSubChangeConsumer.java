@@ -18,6 +18,7 @@ package com.google.cloud.dataflow.cdc.connector;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.datacatalog.v1beta1.Entry;
 import com.google.cloud.dataflow.cdc.common.DataCatalogSchemaUtils.DataCatalogSchemaManager;
+import com.google.cloud.dataflow.cdc.common.WildcardMatching;
 import com.google.cloud.pubsub.v1.Publisher;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.ByteString;
@@ -114,7 +115,7 @@ public class PubSubChangeConsumer implements EmbeddedEngine.ChangeConsumer {
       // qualified name of the MySQL table (e.g. dbInstanceName.databaseName.table_name).
       String tableName = r.topic();
 
-      if (whitelistedTables.contains(tableName)) {
+      if (WildcardMatching.isMatch(whitelistedTables,tableName)) {
         Row updateRecord = translator.translate(r);
         if (updateRecord == null) {
           continue;
