@@ -2,6 +2,7 @@ package com.google.cloud.dataflow.cdc.common;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * @author chaoguo.cui
@@ -82,6 +83,20 @@ public class WildcardMatching {
             }
         }
         return false;
+    }
+
+    public static boolean isPatternMatch(Set<String> whitelistedTables, String tableName) {
+        for (String pattern : whitelistedTables) {
+            pattern = pattern.trim();
+            if (isPatternMatch(pattern, tableName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isPatternMatch(String p, String str) {
+        return Pattern.matches(p, str);
     }
 
     public static void main(String args[]) {

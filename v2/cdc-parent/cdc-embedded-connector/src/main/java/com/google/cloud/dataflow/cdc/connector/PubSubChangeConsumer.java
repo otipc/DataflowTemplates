@@ -115,7 +115,7 @@ public class PubSubChangeConsumer implements EmbeddedEngine.ChangeConsumer {
       // qualified name of the MySQL table (e.g. dbInstanceName.databaseName.table_name).
       String tableName = r.topic();
 
-      if (WildcardMatching.isMatch(whitelistedTables,tableName)) {
+      if (WildcardMatching.isPatternMatch(whitelistedTables,tableName)) {
         Row updateRecord = translator.translate(r);
         if (updateRecord == null) {
           continue;
